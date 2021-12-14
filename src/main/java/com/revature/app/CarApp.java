@@ -97,7 +97,7 @@ public class CarApp {
 								ctx.status(404);
 						} catch (NumberFormatException e) {
 							ctx.status(400);
-							ctx.result("Pet ID must be a numeric value");
+							ctx.result("Car ID must be a numeric value");
 						}
 					});
 					

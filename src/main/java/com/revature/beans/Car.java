@@ -5,7 +5,7 @@ public class Car {
 	private String make;
 	private String model;
 	private int year;
-	private String fueltype;
+	private String status;
 	private String color;
 	
 	public Car() {
@@ -13,7 +13,7 @@ public class Car {
 		make = "Toyota";
 		model = "LE";
 		year = 2015;
-		fueltype = "gas";
+		status = "Available";
 		color = "blue";
 
 }
@@ -50,12 +50,12 @@ public class Car {
 		this.year = year;
 	}
 
-	public String getFuelType() {
-			return fueltype;
+	public String getStatus() {
+			return status;
 		}
 
-		public void setFuelType(String fueltype) {
-			this.fueltype = fueltype;
+		public void setStatus(String status) {
+			this.status = status;
 		}
 		public String getColor() {
 				return color;
@@ -73,7 +73,7 @@ public int hashCode() {
 	final int prime = 31;
 	int result = 1;
 	result = prime * result + year;
-	result = prime * result + ((fueltype == null) ? 0 : fueltype.hashCode());
+	result = prime * result + ((status == null) ? 0 : status.hashCode());
 	result = prime * result + id;
 	result = prime * result + ((make == null) ? 0 : make.hashCode());
 	result = prime * result + ((model == null) ? 0 : model.hashCode());
@@ -93,10 +93,10 @@ public boolean equals(Object obj) {
 	Car other = (Car) obj;
 	if (year != other.year)
 		return false;
-	if (fueltype == null) {
-		if (other.fueltype != null)
+	if (status == null) {
+		if (other.status != null)
 			return false;
-	} else if (!fueltype.equals(other.fueltype))
+	} else if (!status.equals(other.status))
 		return false;
 	if (id != other.id)
 		return false;

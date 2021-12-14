@@ -15,7 +15,7 @@ import com.revature.beans.Car;
 		public Person updateUser(Person userToUpdate);
 		public Person purchasedCar(int carId, Person newOwner);
 		public Set<Car> viewAvailableCars();
-		public Set<Car> searchAvailableCarsByColor(String colors);
+		public Set<Car> searchAvailableCarsByColor(String color);
 		public Set<Car> searchAvailableCarsByModel(String model);
 		public Set<Car> searchAvailableCarsByMake(String make);
 		
