@@ -8,9 +8,8 @@ import com.revature.beans.Car;
 
 
 public interface CarDAO extends GenericDAO<Car> {
+	
 	public Set<Car> getByStatus(String status);
-	public Set<Car> getByMake(String make);
-	public Set<Car> getByModel(String model);
-	public Car getById(int id);
-
+	Set<Car> getByMake(String make);
+	Set<Car> getByModel(String model);
 }
