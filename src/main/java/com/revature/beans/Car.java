@@ -57,7 +57,7 @@ public class Car {
 		public void setStatus(String status) {
 			this.status = status;
 		}
-		public String getColor() {
+	public String getColor() {
 				return color;
 			}
 

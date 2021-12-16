@@ -1,11 +1,12 @@
-package com.revature.services;
+ package com.revature.services;
 
 
 
 	import java.util.Set;
+import java.util.stream.Collectors;
 
-	import com.revature.beans.Person;
-	import com.revature.beans.Car;
+import com.revature.beans.Person;
+import com.revature.beans.Car;
 	import com.revature.data.PersonDAO;
 	import com.revature.data.CarDAO;
 
@@ -15,9 +16,13 @@ package com.revature.services;
 
 		@Override
 		public Person register(Person newUser) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+				int newId = personDao.create(newUser);
+				if (newId != 0) {
+					newUser.setId(newId);
+					return newUser;
+				}
+				return null;
+			}
 
 		@Override
 		public Person logIn(String username, String password) {
@@ -30,52 +35,84 @@ package com.revature.services;
 
 		@Override
 		public Person updateUser(Person userToUpdate) {
-			// TODO Auto-generated method stub
+			if (personDao.getById(userToUpdate.getId()) != null) {
+				personDao.update(userToUpdate);
+				userToUpdate = personDao.getById(userToUpdate.getId());
+				return userToUpdate;
+			}
 			return null;
-		}
-
-		
-		@Override
-		public Set<Car> searchAvailableCarsByColor(String colors) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		
-
-		@Override
-		public Set<Car> searchAvailableCarsByModel(String model) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public CarDAO getCarDao() {
-			return carDao;
-		}
-
-		public void setCarDao(CarDAO carDao) {
-			this.carDao = carDao;
 		}
 
 		@Override
 		public Person purchasedCar(int carId, Person newOwner) {
-			// TODO Auto-generated method stub
+			Car carToPurchase = carDao.getById(carId);
+			if (carToPurchase.getStatus().equals("Available")) {
+				carToPurchase.setStatus("Purchased");
+				newOwner.getCars().add(carToPurchase);
+				
+				carDao.update(carToPurchase);
+				personDao.update(newOwner);
+				return newOwner;
+			}
 			return null;
 		}
-
+		
 		@Override
 		public Set<Car> viewAvailableCars() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Set<Car> searchAvailableCarsByMake(String make) {
-			// TODO Auto-generated method stub
-			return null;
+			return carDao.getByStatus("Available");
 		}
 
 		
+		@Override
+		public Set<Car> searchAvailableCarsByMake(String make) {
+			Set<Car> availableCars = carDao.getByStatus("Available");
+			availableCars = availableCars.stream()
+					.filter(car -> car.getMake().toLowerCase().contains(make.toLowerCase()))
+					.collect(Collectors.toSet());
+			
+			return availableCars;
+		}
+		
+
+		@Override
+		public Set<Car> searchAvailableCarsByModel(String model) {
+	Set<Car> availableCars = carDao.getByStatus("Available");
+			availableCars = availableCars.stream()
+					.filter(car -> car.getModel().toLowerCase().contains(model.toLowerCase()))
+					.collect(Collectors.toSet());
+			
+			return availableCars;
+		}
+		
+		@Override
+		public Set<Car> searchAvailableCarsByColor(String color) {
+			Set<Car> availableCars = carDao.getByStatus("Available");
+			
+			/* 
+			   using a Stream to filter the pets
+			   "filter" takes in a Predicate (functional interface)
+			   and iterates through each pet, adding the pet to the stream
+			   if the predicate returns "true"
+			*/
+			availableCars = availableCars.stream()
+					.filter(car -> car.getColor().toLowerCase().contains(color.toLowerCase()))
+					.collect(Collectors.toSet());
+			
+			// if you don't want to use a Stream, you can always just
+			// do this yourself using a for loop :) it will do the same thing!
+			/*
+			 * Set<Pet> petsBySpecies = new HashSet<>();
+			 * for (Pet pet : availablePets) {
+			 * 		if(pet.getSpecies().toLowercase().contains(species.toLowercase())) {
+			 * 			petsBySpecies.add(pet);
+			 * 		}
+			 * }
+			 * 
+			 * availablePets = petsBySpecies;
+			 */
+			
+			return availableCars;
+		}
 	}
 
 	

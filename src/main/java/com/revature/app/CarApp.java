@@ -1,29 +1,23 @@
 package com.revature.app;
-
-import static io.javalin.apibuilder.ApiBuilder.get;
-import static io.javalin.apibuilder.ApiBuilder.path;
-import static io.javalin.apibuilder.ApiBuilder.post;
-import static io.javalin.apibuilder.ApiBuilder.put;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 import java.util.Set;
 
 import org.eclipse.jetty.http.HttpStatus;
 
-import com.revature.beans.Car;
 import com.revature.beans.Person;
 import com.revature.services.EmployeeService;
+import com.revature.services.EmployeeServiceImpl;
 import com.revature.services.UserService;
 import com.revature.services.UserServiceImpl;
+import com.revature.beans.Car;
 
 import io.javalin.Javalin;
 import io.javalin.http.HttpCode;
 
 public class CarApp {
-	
 	private static UserService userServ = new UserServiceImpl();
-	private static EmployeeService empServ;
-
-
+	private static EmployeeService empServ = new EmployeeServiceImpl();
 	public static void main(String[] args) {
 		Javalin app = Javalin.create();
 		
@@ -34,29 +28,26 @@ public class CarApp {
 			// localhost:8080/cars
 			path("/cars", () -> {
 				get(ctx -> {
+					// checking if they did /car?make=
 					String makeSearch = ctx.queryParam("make");
+					String modelSearch = ctx.queryParam("model");
 					if (makeSearch != null && !"".equals(makeSearch)) {
-						Set<Car> carsFound = ((UserService) userServ).searchAvailableCarsByMake(makeSearch);
+						Set<Car> carsFound = userServ.searchAvailableCarsByMake(makeSearch);
 						ctx.json(carsFound);
+						
+					} 
 					
+					else if (modelSearch != null && !"".equals(modelSearch)) {
+						Set<Car> carsFound = userServ.searchAvailableCarsByMake(modelSearch);
+						ctx.json(carsFound);
 					} else {
+					
+						
 						Set<Car> availableCars = userServ.viewAvailableCars();
 						ctx.json(availableCars);
 					}
-					
-					// checking if they did /cars?model=
-					String modelSearch = ctx.queryParam("model");				
-					if (modelSearch != null && !"".equals(modelSearch)) {
-						Set<Car> carsFound = userServ.searchAvailableCarsByModel(modelSearch);
-						ctx.json(carsFound);
-					} else {
-						// if they didn't put ?model
-						Set<Car> availableCars = userServ.viewAvailableCars();
-						ctx.json(availableCars);
-					}
-					
-					
 				});
+				
 				post(ctx -> {
 					// bodyAsClass turns JSON into a Java object based on the class you specify
 					Car newCar = ctx.bodyAsClass(Car.class);
@@ -68,14 +59,14 @@ public class CarApp {
 					}
 				});
 				
-				// localhost:8080/cars/purchased/8
+				// localhost:8080/pets/adopt/8
 				path("/purchased/{id}", () -> {
 					put(ctx -> {
 						try {
 							int carId = Integer.parseInt(ctx.pathParam("id")); // num format exception
 							Person newOwner = ctx.bodyAsClass(Person.class);
-							// returns the person with their new pet added
-							newOwner = userServ.purchasedCar(carId ,newOwner );
+							// returns the person with their new car added
+							newOwner = userServ.purchasedCar(carId, newOwner);
 							ctx.json(newOwner);
 						} catch (NumberFormatException e) {
 							ctx.status(400);
@@ -84,7 +75,7 @@ public class CarApp {
 					});
 				});
 				
-				// localhost:8080/cars/8
+				// localhost:8080/pets/8
 				path("/{id}", () -> {
 					
 					get(ctx -> {
@@ -112,7 +103,7 @@ public class CarApp {
 								else
 									ctx.status(404);
 							} else {
-								// conflict: the id doesn't match the id of the car sent
+								// conflict: the id doesn't match the id of the pet sent
 								ctx.status(HttpCode.CONFLICT);
 							}
 						} catch (NumberFormatException e) {
