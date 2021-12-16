@@ -1,18 +1,18 @@
  package com.revature.services;
 
-
-
-	import java.util.Set;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.revature.beans.Person;
 import com.revature.beans.Car;
 	import com.revature.data.PersonDAO;
-	import com.revature.data.CarDAO;
+import com.revature.data.postgres.CarPostgres;
+import com.revature.data.postgres.PersonPostgres;
+import com.revature.data.CarDAO;
 
 	public class UserServiceImpl implements UserService {
-		private PersonDAO personDao;
-		private CarDAO carDao;
+		private PersonDAO personDao = new PersonPostgres();
+		private CarDAO carDao = new CarPostgres();
 
 		@Override
 		public Person register(Person newUser) {
@@ -113,7 +113,11 @@ import com.revature.beans.Car;
 			
 			return availableCars;
 		}
+
+
+		
 	}
+
 
 	
 

@@ -38,7 +38,7 @@ public class CarApp {
 					} 
 					
 					else if (modelSearch != null && !"".equals(modelSearch)) {
-						Set<Car> carsFound = userServ.searchAvailableCarsByMake(modelSearch);
+						Set<Car> carsFound = userServ.searchAvailableCarsByModel(modelSearch);
 						ctx.json(carsFound);
 					} else {
 					
