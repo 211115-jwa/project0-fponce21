@@ -52,7 +52,7 @@ public class CarDAOTest {
 		
 		int generatedId = carDao.create(newCar);
 		
-		assertEquals(0, generatedId);
+		assertNotEquals(0, generatedId);
 		System.out.println(generatedId);
 	}
 	
@@ -67,10 +67,10 @@ public class CarDAOTest {
 	@Test
 	// cahnge ID bc deleted ID: 1, how do i create an id:1again?
 	public void testDelete() {
-		Car carDelete = carDao.getById(0);
+		Car carDelete = carDao.getById(5);
 		carDelete.setMake("Toyota");
 		carDao.delete(carDelete);
-		assertNotEquals("Toyota",carDao.getById(0).getMake());	
+		assertNotEquals("Toyota",carDao.getById(5).getMake());	
 	}
 	
 }

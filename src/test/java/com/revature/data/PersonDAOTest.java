@@ -50,10 +50,10 @@ public class PersonDAOTest {
 
 	@Test
 	public void testUpdate() {
-		Person personUp = personDao.getById(11);
+		Person personUp = personDao.getById(1);
 		personUp.setFullName("ponce");
 		personDao.update(personUp);
-		assertEquals("ponce",personDao.getById(11).getFullName());	
+		assertEquals("ponce",personDao.getById(1).getFullName());	
 	}
 	
 	

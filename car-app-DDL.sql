@@ -36,3 +36,4 @@ alter table person drop column user_name;
 commit;
 
 select * from person;
+select * from car;
