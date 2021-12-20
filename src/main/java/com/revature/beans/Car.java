@@ -10,11 +10,11 @@ public class Car {
 	
 	public Car() {
 		id = 0;
-		make = "Toyota";
-		model = "LE";
-		year = 2015;
+		make = "Nissan";
+		model = "Rogue";
+		year = 2016;
 		status = "Available";
-		color = "blue";
+		color = "green";
 
 }
 

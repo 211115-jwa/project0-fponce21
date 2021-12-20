@@ -129,6 +129,22 @@ public class UserServiceTest {
 	}
 	
 	@Test
+	public void searchByModelExists() {
+		String model = "Corolla";
+		
+		when(carDao.getByStatus("Available")).thenReturn(mockAvailableCars);
+		
+		Set<Car> actualCorollas = userServ.searchAvailableCarsByMake(model);
+		boolean onlyCorollas = true;
+		for (Car car : actualCorollas) {
+			if (!car.getMake().equals(model))
+				onlyCorollas = false;
+		}
+		
+		assertTrue(onlyCorollas);
+	}
+	
+	@Test
 	public void searchByMakeDoesNotExist() {
 		String make = "Merecedes";
 		
